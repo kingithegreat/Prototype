@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Read(//c/Users/adenk/Desktop/prototype//**)",
-      "Bash(start \"\" \"c:\\\\Users\\\\adenk\\\\Desktop\\\\prototype\\\\index.html\")"
-    ]
-  }
-}
