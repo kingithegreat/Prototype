@@ -1,0 +1,35 @@
+name: CI
+
+# Lint + smoke-check the static site on every PR.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Lint HTML
+        run: npx --yes htmlhint "**/*.html"
+
+      - name: Smoke check (required files present and non-empty)
+        run: |
+          set -euo pipefail
+          for f in index.html styles.css; do
+            if [ ! -s "$f" ]; then
+              echo "::error::Missing or empty required file: $f"
+              exit 1
+            fi
+          done
+          echo "Static site files present."
